@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://b53ijfs4o130j"]
+
+[ext_resource type="Script" path="res://zombie.gd" id="1_l8wmf"]
+[ext_resource type="Texture2D" uid="uid://d13sl77353xp4" path="res://dead_body.png" id="2_mvak7"]
+[ext_resource type="Texture2D" uid="uid://dyuel5y1anp8y" path="res://skeleton-attack_1.png" id="2_s1eit"]
+[ext_resource type="Texture2D" uid="uid://b0xnk3mp4s021" path="res://blood_splatter.png" id="3_47qi0"]
+[ext_resource type="AudioStream" uid="uid://34pd6c4st2ch" path="res://monster_die.wav" id="4_gyx4m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h03if"]
+radius = 29.1548
+
+[node name="Zombie" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_l8wmf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_h03if")
+
+[node name="Graphics" type="Node2D" parent="."]
+
+[node name="Alive" type="Sprite2D" parent="Graphics"]
+position = Vector2(-3, -1)
+rotation = -1.57111
+scale = Vector2(0.29574, 0.359774)
+texture = ExtResource("2_s1eit")
+
+[node name="Dead" type="Sprite2D" parent="Graphics"]
+visible = false
+z_index = -1
+position = Vector2(-2, 2)
+scale = Vector2(0.570313, 0.53125)
+texture = ExtResource("2_mvak7")
+
+[node name="BloodSplatter" type="Sprite2D" parent="Graphics/Dead"]
+self_modulate = Color(0.435294, 0, 0, 1)
+show_behind_parent = true
+position = Vector2(5, 9)
+rotation = 0.598542
+texture = ExtResource("3_47qi0")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, -70)
+collision_mask = 3
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_gyx4m")
+bus = &"sfx"

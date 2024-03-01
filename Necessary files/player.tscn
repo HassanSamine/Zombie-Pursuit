@@ -1,0 +1,192 @@
+[gd_scene load_steps=9 format=3 uid="uid://bq2vpjby42xxr"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_g0usk"]
+[ext_resource type="Texture2D" uid="uid://gr6tf8rtbs44" path="res://survivor-shoot_shotgun_0.png" id="2_wckxa"]
+[ext_resource type="Texture2D" uid="uid://yni8heqj66q4" path="res://survivor-idle_0.png" id="3_3gchj"]
+[ext_resource type="Texture2D" uid="uid://b0xnk3mp4s021" path="res://blood_splatter.png" id="3_hhohp"]
+[ext_resource type="AudioStream" uid="uid://d3h1m4h3yvph6" path="res://death_noise1.wav" id="4_6hrcp"]
+[ext_resource type="AudioStream" uid="uid://cb0t46h1y012j" path="res://shotgun_shot1.wav" id="5_b881p"]
+[ext_resource type="Texture2D" uid="uid://djlnwq4tg0rfw" path="res://muzzle_flash.png" id="6_fbxau"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o5yjs"]
+radius = 32.0624
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_g0usk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_o5yjs")
+
+[node name="Graphics" type="Node2D" parent="."]
+
+[node name="Alive" type="Sprite2D" parent="Graphics"]
+position = Vector2(-7, -15)
+rotation = -1.60436
+scale = Vector2(0.354499, 0.362056)
+texture = ExtResource("2_wckxa")
+
+[node name="Dead" type="Sprite2D" parent="Graphics"]
+visible = false
+z_index = -1
+position = Vector2(0, -1)
+rotation = 1.57285
+scale = Vector2(0.325758, 0.351613)
+texture = ExtResource("3_3gchj")
+
+[node name="BloodSplatter" type="Sprite2D" parent="Graphics/Dead"]
+self_modulate = Color(0.435294, 0, 0, 1)
+show_behind_parent = true
+position = Vector2(5, 9)
+rotation = 0.598542
+texture = ExtResource("3_hhohp")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(6, -11)
+target_position = Vector2(0, -1000)
+collision_mask = 3
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_6hrcp")
+bus = &"sfx"
+
+[node name="ShootSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_b881p")
+bus = &"sfx"
+
+[node name="MuzzleFlash" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0.780392, 0.792157, 0.227451, 1)
+position = Vector2(5, -84)
+texture = ExtResource("6_fbxau")
+
+[node name="Timer" type="Timer" parent="MuzzleFlash"]
+wait_time = 0.05
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VictoryScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.329412)
+
+[node name="Panel" type="Panel" parent="CanvasLayer/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.0
+offset_top = -46.0
+offset_right = 79.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VictoryScreen/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -37.0
+offset_top = 9.0
+offset_right = 37.0
+offset_bottom = 35.0
+grow_horizontal = 2
+text = "You Won!"
+
+[node name="Button" type="Button" parent="CanvasLayer/VictoryScreen/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.5
+offset_top = -37.0
+offset_right = 32.5
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Restart"
+
+[node name="DeathScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/DeathScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.329412)
+
+[node name="Panel" type="Panel" parent="CanvasLayer/DeathScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.0
+offset_top = -46.0
+offset_right = 79.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathScreen/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -37.0
+offset_top = 9.0
+offset_right = 37.0
+offset_bottom = 35.0
+grow_horizontal = 2
+text = "You Died!"
+
+[node name="Button" type="Button" parent="CanvasLayer/DeathScreen/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.5
+offset_top = -37.0
+offset_right = 32.5
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Restart"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="timeout" from="MuzzleFlash/Timer" to="MuzzleFlash" method="hide"]
+[connection signal="button_up" from="CanvasLayer/VictoryScreen/Panel/Button" to="." method="restart"]
+[connection signal="button_up" from="CanvasLayer/DeathScreen/Panel/Button" to="." method="restart"]
